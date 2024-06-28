@@ -34,8 +34,14 @@ import __init__
 from aos_com.evm_ftdi import EvmFtdi as Ftdi
 
 com = Ftdi(log=False)
-com.i2cOpen()
-com.gpioSetDirection(com.enable_pin, 0)
+
+try:
+    com.i2cOpen()
+    com.gpioSetDirection(com.enable_pin, 0)
+except:
+    print("Could not FTDI connection. Exiting.")
+    print("Is the FTDI controller attached?")
+    quit()
 
 #  Wrapper functions for the FTDI FT232H I2C&GPIO.
 enableHigh = lambda: com.gpioSet(com.enable_pin, com.enable_pin)

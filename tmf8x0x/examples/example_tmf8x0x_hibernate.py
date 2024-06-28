@@ -65,6 +65,16 @@ if __name__ == "__main__":
 
     print("Open FTDI communication channels")
     tof.open()
+    try:
+        print("Connect to TMF8x0x")
+        if tof.enableAndStart() != tof.Status.OK:
+            print("The application did not start up as expected")
+    except:
+        print("Could not connect to TMF8x0x. Exiting.")
+        print("Is the FTDI controller attached?")
+        quit()
+
+    print("[app_id, major, minor, patch] are: " , [f'0x{i:02x}' for i in tof.getAppId()])
     
     ## Factory Calibration ##
     

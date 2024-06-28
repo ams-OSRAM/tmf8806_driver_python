@@ -468,7 +468,7 @@ class TestTmf8x0xApplication:
         regs = self.tof.com.i2cTxRx( self.tof.I2C_SLAVE_ADDR, [ 0x00 ], 0x20 )
         assert regs[0x00] == 0xC0 # OL_APPID_OFFSET          
         assert regs[0x01] == TMF880X_APP_VERSION_MAJOR # OL_APPREV_MAJOR_OFFSET
-        # assert regs[0x12] == TMF880X_APP_VERSION_MINOR # OL_APPREV_MINOR_OFFSET
+        assert regs[0x12] == TMF880X_APP_VERSION_MINOR # OL_APPREV_MINOR_OFFSET
         # if self.tof.hex_file: # patched
         #    assert regs[0x13] > 0 # OL_APPREV_PATCH_OFFSET
         # else: # ROM code
