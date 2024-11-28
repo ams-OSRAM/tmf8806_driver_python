@@ -1,22 +1,10 @@
-# *****************************************************************************
-# * Copyright by ams OSRAM AG                                                 *
-# * All rights are reserved.                                                  *
-# *                                                                           *
-# * IMPORTANT - PLEASE READ CAREFULLY BEFORE COPYING, INSTALLING OR USING     *
-# * THE SOFTWARE.                                                             *
-# *                                                                           *
-# * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS       *
-# * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT         *
-# * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS         *
-# * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT  *
-# * OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,     *
-# * SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT          *
-# * LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES LOSS OF USE,      *
-# * DATA, OR PROFITS OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY      *
-# * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT       *
-# * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE     *
-# * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.      *
-# *****************************************************************************
+# /*****************************************************************************
+# * Copyright (c) [2024] ams-OSRAM AG                                          *
+# * All rights are reserved.                                                   *
+# *                                                                            *
+# * FOR FULL LICENSE TEXT SEE LICENSE.TXT                                      *
+# ******************************************************************************/
+ 
 
 import pytest
 import sys
@@ -300,6 +288,20 @@ class TestTmf8x0xApplication:
         configuration.data.repetitionPeriodMs = periodMs
         configuration.data.algo.vcselClkDiv2 = vcselClkDiv2
         configuration.data.algo.distanceMode = 1
+        self._run_distance_measurement(configuration=configuration,with_calibration=with_calibration,number_of_results=number_of_results)
+
+    # iterate over iterationsK, enable 10m mode
+    @pytest.mark.parametrize("number_of_results",  [5])
+    @pytest.mark.parametrize("with_calibration",   [False,True])
+    @pytest.mark.parametrize("iterationsK",        [4000, 550, 900])
+    @pytest.mark.parametrize("periodMs",           [100])
+    @pytest.mark.parametrize("vcselClkDiv2",       [1])
+    def test_distance_measurement_10m_mode(self,number_of_results:int,with_calibration:bool,iterationsK:int,periodMs:int,vcselClkDiv2:int):
+        configuration = self.tof.getDefaultConfiguration()
+        configuration.data.kIters = iterationsK
+        configuration.data.repetitionPeriodMs = periodMs
+        configuration.data.algo.vcselClkDiv2 = vcselClkDiv2
+        configuration.data.algo.reserved = 2   # 10m mode selected
         self._run_distance_measurement(configuration=configuration,with_calibration=with_calibration,number_of_results=number_of_results)
 
     def test_4m_mode_reference_peak_location(self):

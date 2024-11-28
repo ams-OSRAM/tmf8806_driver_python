@@ -6,4 +6,4 @@ pyzmq
 avrdude_windows
 setuptools
 ./packages/aos_com-1.0.10-py3-none-any.whl
-
+pyserial
